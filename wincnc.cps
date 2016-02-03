@@ -38,12 +38,12 @@ allowedCircularPlanes = undefined; // allow any circular motion
 properties = {
   writeMachine: true, // write machine
   writeTools: true, // writes the tools
-  showSequenceNumbers: false, // show sequence numbers
+  showSequenceNumbers: true, // show sequence numbers
   sequenceNumberStart: 10, // first sequence number
   sequenceNumberIncrement: 1, // increment for sequence numbers
   optionalStop: true, // optional stop
   separateWordsWithSpace: true, // specifies that the words should be separated with a white space
-  useToolChanger: true, // specifies that a tool changer is available
+  useToolChanger: false, // specifies that a tool changer is available
   ATCMode: 0 // M0 or M1 on the ATC line in the WinCNC.ini file
 };
 
@@ -411,8 +411,12 @@ function onSection() {
       if (tool.spindleRPM > 99999) {
         warning(localize("Spindle speed exceeds maximum value."));
       }
-      writeBlock(
-        sOutput.format(tool.spindleRPM), mFormat.format(tool.clockwise ? 3 : 4)
+       writeBlock(
+      sOutput.format(tool.spindleRPM), mFormat.format(tool.clockwise ? 3 : 4)
+      );
+    } else {
+         writeBlock(
+         sOutput.format(tool.spindleRPM), mFormat.format(tool.clockwise ? 3 : 4)
       );
     }
   }
