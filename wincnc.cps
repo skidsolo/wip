@@ -86,7 +86,7 @@ var iOutput = createReferenceVariable({prefix:"I", force:true}, xyzFormat);
 var jOutput = createReferenceVariable({prefix:"J", force:true}, xyzFormat);
 var kOutput = createReferenceVariable({prefix:"K", force:true}, xyzFormat);
 
-var gMotionModal = createModal({}, gFormat); // modal group 1 // G0-G3, ...
+var gMotionModal = createModal({force:true}, gFormat); // modal group 1 // G0-G3, ...
 // var gPlaneModal = createModal({onchange:function () {gMotionModal.reset();}}, gFormat); // modal group 2 // G17-19
 var gAbsIncModal = createModal({}, gFormat); // modal group 3 // G90-91
 var gFeedModeModal = createModal({}, gFormat); // modal group 5 // G93-94
@@ -374,7 +374,9 @@ function onSection() {
     if (tool.number > numberOfToolSlots) {
       warning(localize("Tool number exceeds maximum value."));
     }
-
+     writeBlock(mFormat.format(5));
+     writeBlock(gFormat.format(28), "Y" + xyzFormat.format(0));
+     
     if (properties.useToolChanger) {
       writeBlock("T" + toolFormat.format(tool.number));
     }
@@ -414,11 +416,11 @@ function onSection() {
        writeBlock(
       sOutput.format(tool.spindleRPM), mFormat.format(tool.clockwise ? 3 : 4)
       );
-    } else {
-         writeBlock(
-         sOutput.format(tool.spindleRPM), mFormat.format(tool.clockwise ? 3 : 4)
-      );
-    }
+    } 
+  }else {
+     writeBlock(
+     sOutput.format(tool.spindleRPM), mFormat.format(tool.clockwise ? 3 : 4)
+     );
   }
 
   // wcs
@@ -856,5 +858,5 @@ function onClose() {
 
   setWorkPlane(new Vector(0, 0, 0)); // reset working plane
 
-  writeBlock(gFormat.format(28)); // home XYZ
+  writeBlock(gFormat.format(28), "Y" + xyzFormat.format(0)); // home XYZ
 }
